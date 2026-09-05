@@ -2,7 +2,7 @@
 
 Digital & Print E-Catalog for **Essence & Light**.
 
-- 🌸 **Live Web Catalog**: [https://essenceandlight.github.io/e-catalog/](https://essenceandlight.github.io/e-catalog/)
+- 🌸 **Live Web Catalog**: [https://arsycreative.github.io/essenceandlight/](https://arsycreative.github.io/essenceandlight/)
 - 🖨️ **Printable PDF Version**: [`pdf.html`](pdf.html) (A4 formatted with print optimization)
 
 ---
@@ -24,7 +24,7 @@ Digital & Print E-Catalog for **Essence & Light**.
 
 ## 🚀 Deployment to GitHub Pages
 
-1. Push the repository to GitHub under `essenceandlight/e-catalog`.
+1. Push the repository to GitHub under `arsycreative/essenceandlight`.
 2. Go to **Settings** > **Pages** in your repository.
 3. Under **Build and deployment > Source**, select **GitHub Actions** (or Deploy from branch `main` / root).
-4. Your catalog will automatically be live at `https://essenceandlight.github.io/e-catalog/`.
+4. Your catalog will automatically be live at `https://arsycreative.github.io/essenceandlight/`.
