@@ -38,7 +38,23 @@
   --ph: 746px;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+img, svg {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
 
 body {
   font-family: var(--ff-body);
@@ -48,30 +64,52 @@ body {
   align-items: center;
   padding: 20px 0 60px;
   gap: 20px;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* ─────────────────────────────────────────────────────────
-   Print button
+   Print & Screenshot Protection
 ───────────────────────────────────────────────────────── */
-.print-btn {
-  position: fixed;
-  top: 16px; right: 16px;
-  z-index: 999;
-  background: linear-gradient(135deg, #F9C5D1, #FFDCC8);
-  border: 2px solid rgba(255,255,255,0.6);
-  border-radius: 100px;
-  padding: 10px 24px;
-  font-family: var(--ff-body);
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #7A3A4A;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(180,100,120,0.25);
-  transition: transform 0.2s ease;
+@media print {
+  html, body {
+    display: none !important;
+    visibility: hidden !important;
+  }
 }
-.print-btn:hover { transform: scale(1.05); }
 
-@media print { .print-btn { display: none; } }
+.protection-shield {
+  position: fixed;
+  inset: 0;
+  background: rgba(237, 229, 220, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  z-index: 9999999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 24px;
+  color: #7A5A45;
+  user-select: none;
+  cursor: pointer;
+}
+.protection-shield.active {
+  display: flex !important;
+}
+.shield-brand {
+  font-family: var(--ff-display);
+  font-size: 1.8rem;
+  color: #C85878;
+}
+.shield-msg {
+  font-family: var(--ff-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #4A3728;
+}
 
 /* ─────────────────────────────────────────────────────────
    Page base
@@ -783,8 +821,6 @@ body {
   </style>
 </head>
 <body>
-
-<button class="print-btn" onclick="window.print()">🖨️ Simpan sebagai PDF</button>
 
 <!-- ══════════════════════════════════════════════════════
      PAGE 1 — COVER
@@ -2528,6 +2564,107 @@ body {
     <div class="closing-deco-row">🌿 ✦ 🌸 ✦ 🌿</div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════════
+     SCREENSHOT & CONTENT PROTECTION SHIELD
+══════════════════════════════════════════════════════ -->
+<div id="protectionShield" class="protection-shield">
+  <div class="shield-brand">Essence &amp; Light ♡</div>
+  <div class="shield-msg">
+    🔒 Katalog ini dilindungi hak cipta.<br/>
+    <span style="font-size:0.8rem;font-weight:500;color:#9A8090;">Klik pada layar untuk melanjutkan melihat katalog.</span>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  const shield = document.getElementById('protectionShield');
+  let shieldTimeout;
+
+  function triggerShield(duration) {
+    if (shield) {
+      shield.classList.add('active');
+      clearTimeout(shieldTimeout);
+      if (duration) {
+        shieldTimeout = setTimeout(() => {
+          shield.classList.remove('active');
+        }, duration);
+      }
+    }
+  }
+
+  function hideShield() {
+    if (shield) {
+      shield.classList.remove('active');
+    }
+  }
+
+  // Dismiss shield on click
+  if (shield) {
+    shield.addEventListener('click', hideShield);
+    shield.addEventListener('touchstart', hideShield, { passive: true });
+  }
+
+  // Disable Right-Click Context Menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable Dragging images/SVGs
+  document.addEventListener('dragstart', e => e.preventDefault());
+
+  // Window Blur / Tab switch / Screenshot tool trigger (Snipping tool, screen recorders)
+  window.addEventListener('blur', () => triggerShield());
+  window.addEventListener('focus', hideShield);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      triggerShield();
+    } else {
+      hideShield();
+    }
+  });
+
+  // Keyboard protection (PrintScreen, Ctrl+P, Cmd+P, Ctrl+S, Cmd+S, DevTools)
+  window.addEventListener('keydown', (e) => {
+    const key = e.key ? e.key.toLowerCase() : '';
+
+    // PrintScreen key
+    if (e.key === 'PrintScreen' || e.keyCode === 44) {
+      triggerShield(3000);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('');
+      }
+      e.preventDefault();
+      return;
+    }
+
+    // Ctrl/Cmd + P (Print), S (Save), U (Source code), C (Copy), A (Select all)
+    if ((e.ctrlKey || e.metaKey) && ['p', 's', 'u', 'c', 'a'].includes(key)) {
+      e.preventDefault();
+      triggerShield(2000);
+      return;
+    }
+
+    // DevTools (F12, Ctrl+Shift+I, Cmd+Opt+I, Ctrl+Shift+J, Cmd+Opt+J, Ctrl+Shift+C)
+    if (e.key === 'F12' ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+        ((e.ctrlKey || e.metaKey) && e.altKey && ['i', 'j', 'c'].includes(key))) {
+      e.preventDefault();
+      triggerShield(2000);
+      return;
+    }
+  });
+
+  // Keyup for PrintScreen
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'PrintScreen' || e.keyCode === 44) {
+      triggerShield(3000);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('');
+      }
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
