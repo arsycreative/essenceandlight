@@ -1,0 +1,189 @@
+/* ================================================================
+   ESSENCE & LIGHT — ANIMATIONS & MICRO-INTERACTIONS (style2.css)
+   Injected via @import in main style or linked in HTML head
+   ================================================================ */
+
+/* ── Floating doodle elements ── */
+
+/* Continuous rotation for decorative elements */
+@keyframes slowRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-5px) scale(1.02); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Active page animations ── */
+.page.active .product-emoji-hero { animation: floatEmoji 3s ease-in-out infinite; }
+.page.active .cover-product-card { animation: scaleIn 0.5s ease both; }
+.page.active .cover-product-card:nth-child(1) { animation-delay: 0.1s; }
+.page.active .cover-product-card:nth-child(2) { animation-delay: 0.2s; }
+.page.active .cover-product-card:nth-child(3) { animation-delay: 0.3s; }
+.page.active .cover-product-card:nth-child(4) { animation-delay: 0.4s; }
+
+.page.active .feature-card { animation: fadeInUp 0.4s ease both; }
+.page.active .feature-card:nth-child(1) { animation-delay: 0.05s; }
+.page.active .feature-card:nth-child(2) { animation-delay: 0.1s; }
+.page.active .feature-card:nth-child(3) { animation-delay: 0.15s; }
+.page.active .feature-card:nth-child(4) { animation-delay: 0.2s; }
+.page.active .feature-card:nth-child(5) { animation-delay: 0.25s; }
+
+.page.active .hiw-step { animation: slideInRight 0.35s ease both; }
+.page.active .hiw-step:nth-child(1) { animation-delay: 0.05s; }
+.page.active .hiw-step:nth-child(2) { animation-delay: 0.1s; }
+.page.active .hiw-step:nth-child(3) { animation-delay: 0.15s; }
+.page.active .hiw-step:nth-child(4) { animation-delay: 0.2s; }
+.page.active .hiw-step:nth-child(5) { animation-delay: 0.25s; }
+.page.active .hiw-step:nth-child(6) { animation-delay: 0.3s; }
+.page.active .hiw-step:nth-child(7) { animation-delay: 0.35s; }
+
+.page.active .bundle-card { animation: fadeInUp 0.4s ease both; }
+.page.active .bundle-card:nth-child(1) { animation-delay: 0.05s; }
+.page.active .bundle-card:nth-child(2) { animation-delay: 0.1s; }
+.page.active .bundle-card:nth-child(3) { animation-delay: 0.15s; }
+.page.active .bundle-card:nth-child(4) { animation-delay: 0.2s; }
+.page.active .bundle-card:nth-child(5) { animation-delay: 0.25s; }
+
+.page.active .scent-cat { animation: slideInRight 0.4s ease both; }
+.page.active .scent-cat:nth-child(1) { animation-delay: 0.05s; }
+.page.active .scent-cat:nth-child(2) { animation-delay: 0.12s; }
+.page.active .scent-cat:nth-child(3) { animation-delay: 0.19s; }
+.page.active .scent-cat:nth-child(4) { animation-delay: 0.26s; }
+
+.page.active .htc-step { animation: fadeInUp 0.35s ease both; }
+.page.active .htc-step:nth-child(1) { animation-delay: 0.05s; }
+.page.active .htc-step:nth-child(2) { animation-delay: 0.12s; }
+.page.active .htc-step:nth-child(3) { animation-delay: 0.19s; }
+.page.active .htc-step:nth-child(4) { animation-delay: 0.26s; }
+
+/* ── Touch / swipe feedback ── */
+.catalog {
+  touch-action: pan-y;
+}
+
+/* ── Scroll snap feel on longer pages ── */
+.page {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Shimmer on price tags ── */
+.price-tag, .price-multi-card {
+  position: relative;
+  overflow: hidden;
+}
+.price-tag::after, .price-multi-card::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -75%;
+  width: 50%; height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.35) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shimmer 3.5s infinite;
+}
+@keyframes shimmer {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
+
+/* ── Promo card sparkle ── */
+.promo-offer-card {
+  position: relative;
+  overflow: hidden;
+}
+.promo-offer-card::before {
+  content: '✦';
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 1rem;
+  color: var(--blush-pink);
+  animation: twinkle 2.5s infinite;
+}
+.promo-offer-card::after {
+  content: '✦';
+  position: absolute;
+  bottom: 10px; left: 14px;
+  font-size: 0.7rem;
+  color: var(--pastel-peach);
+  animation: twinkle 2.5s infinite 1s;
+}
+
+/* ── Closing page floating hearts ── */
+@keyframes floatHeart {
+  0%   { transform: translateY(0) rotate(-15deg); opacity: 0.7; }
+  100% { transform: translateY(-80px) rotate(15deg); opacity: 0; }
+}
+
+/* ── Background pattern on some pages ── */
+.page-promo::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle, rgba(249,197,209,0.15) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-promo .page-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.page-bundle::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle, rgba(249,197,209,0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-bundle .page-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Cover wave animation ── */
+@keyframes waveFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33%       { transform: translateY(-6px) translateX(2px); }
+  66%       { transform: translateY(3px) translateX(-2px); }
+}
+
+.cover-product-card:nth-child(1) { animation: waveFloat 4s ease-in-out infinite 0s; }
+.cover-product-card:nth-child(2) { animation: waveFloat 4s ease-in-out infinite 0.7s; }
+.cover-product-card:nth-child(3) { animation: waveFloat 4s ease-in-out infinite 1.4s; }
+.cover-product-card:nth-child(4) { animation: waveFloat 4s ease-in-out infinite 2.1s; }
+
+/* Override scaleIn for active state to take precedence */
+.page.active .cover-product-card {
+  animation: waveFloat 4s ease-in-out infinite, scaleIn 0.5s ease both;
+}
+.page.active .cover-product-card:nth-child(1) { animation-delay: 0s, 0.1s; }
+.page.active .cover-product-card:nth-child(2) { animation-delay: 0.7s, 0.2s; }
+.page.active .cover-product-card:nth-child(3) { animation-delay: 1.4s, 0.3s; }
+.page.active .cover-product-card:nth-child(4) { animation-delay: 2.1s, 0.4s; }
